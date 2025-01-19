@@ -20,7 +20,37 @@ class LoadingScreen {
         this.setupElements();
         this.initializeComponents();
         this.setupRandomBackgrounds();
+        this.initializeColors();
     }
+      initializeColors() {
+          const greenTextElements = [
+              '.loading-message', 
+              '.loading-text',
+              '.progress',
+              '.loading-tips',
+              '.server-status',
+              '.player-name',
+              '.stat-value',
+              '.feed-title',
+              '.event-item',
+              '.staff-role',
+              '.staff-name',
+              '.staff-id',
+              '.panel-title',
+              '.stat-label',
+              '.server-features h4',
+              '.feature-list li',
+              '.player-ids',
+              '.join-timestamp'
+          ];
+
+          greenTextElements.forEach(selector => {
+              const elements = document.querySelectorAll(selector);
+              elements.forEach(el => {
+                  el.style.color = '#4CAF50';
+              });
+          });
+      }
     setupElements() {
         // First verify all elements exist
         const elements = {
@@ -155,150 +185,171 @@ class LoadingScreen {
                 this.elements.container.style.display = 'none';
             }, 1000);
         }, 1000);
-    } // Add closing brace here
-} // Add closing brace for LoadingScreen class
+    }
+}
 
-// Rest of your classes (ServerStats, EventTicker)
 class ServerStats {
-        constructor() {
-            this.setupElements();
-            this.serverIP = "147.189.172.240:30120";
-            this.updateInterval = 5000;
-            this.stats = {
-                players: 0,
-                maxPlayers: 0,
-                queue: 0,
-                fps: 0,
-                uptime: 0,
-                lastUpdate: null
-            };
-            this.startUpdates();
-        }
+    constructor() {
+        this.setupElements();
+        this.serverIP = "147.189.172.240:30120";
+        this.updateInterval = 5000;
+        this.stats = {
+            players: 0,
+            maxPlayers: 0,
+            queue: 0,
+            fps: 0,
+            uptime: 0,
+            lastUpdate: null
+        };
+        this.startUpdates();
+        this.applyGreenColors();
+    }
 
-        setupElements() {
-            this.elements = {
-                playerCount: document.getElementById('playerCount'),
-                queueCount: document.getElementById('queueCount'),
-                serverFPS: document.getElementById('serverFPS'),
-                serverStatus: document.getElementById('serverStatus'),
-                onlineStatus: document.querySelector('.online-status'),
-                playerList: document.getElementById('playerList')
-            };
-        
-            // Set initial values
-            this.elements.playerCount.textContent = '0/0';
-            this.elements.queueCount.textContent = '0';
-            this.elements.serverFPS.textContent = '0';
-            this.updateServerStatus(false);
-        }
+    setupElements() {
+        this.elements = {
+            playerCount: document.getElementById('playerCount'),
+            queueCount: document.getElementById('queueCount'),
+            serverFPS: document.getElementById('serverFPS'),
+            serverStatus: document.getElementById('serverStatus'),
+            onlineStatus: document.querySelector('.online-status'),
+            playerList: document.getElementById('playerList')
+        };
+    
+        // Set initial values
+        this.elements.playerCount.textContent = '0/0';
+        this.elements.queueCount.textContent = '0';
+        this.elements.serverFPS.textContent = '0';
+        this.updateServerStatus(false);
+    }
 
-        updateServerStatus(isOnline) {
-            if (isOnline) {
-                this.elements.onlineStatus.className = 'online-status status-online';
-                this.elements.serverStatus.textContent = 'Online';
-            } else {
-                this.elements.onlineStatus.className = 'online-status status-offline';
-                this.elements.serverStatus.textContent = 'Offline';
-            }
-        }
+    applyGreenColors() {
+        const elements = {
+            playerCount: document.getElementById('playerCount'),
+            queueCount: document.getElementById('queueCount'),
+            serverFPS: document.getElementById('serverFPS'),
+            serverStatus: document.getElementById('serverStatus')
+        };
 
-        async fetchDetailedStats() {
-            try {
-                const [serverInfo, players] = await Promise.all([
-                    fetch(`http://${this.serverIP}/info.json`),
-                    fetch(`http://${this.serverIP}/players.json`)
-                ]);
+        Object.values(elements).forEach(el => {
+            if (el) el.style.color = '#4CAF50';
+        });
+    }
 
-                const serverData = await serverInfo.json();
-                const playerData = await players.json();
-
-                return {
-                    players: playerData.length,
-                    maxPlayers: serverData.vars.sv_maxClients,
-                    queue: 0, // If you have a queue system
-                    fps: Math.round(serverData.vars.sv_fps || 60),
-                    uptime: serverData.vars.Uptime,
-                    playerList: playerData.map(p => ({
-                        id: p.id,
-                        name: p.name,
-                        ping: p.ping
-                    }))
-                };
-            } catch (error) {
-                console.warn('Server stats fetch failed:', error);
-                return this.stats; // Return current stats on error
-            }
-        }
-
-        updateUI(stats) {
-            // Update existing elements
-            this.elements.playerCount.textContent = `${stats.players}/${stats.maxPlayers}`;
-            this.elements.serverFPS.textContent = stats.fps;
-        
-            // Add player list update
-            if (stats.playerList && this.elements.playerList) {
-                this.elements.playerList.innerHTML = stats.playerList
-                    .map(player => `
-                        <div class="player-item">
-                            <span class="player-name">${player.name}</span>
-                            <span class="player-ping">${player.ping}ms</span>
-                        </div>
-                    `).join('');
-            }
-
-            // Add server health indicator
-            const serverHealth = stats.fps >= 30 ? 'good' : stats.fps >= 20 ? 'warning' : 'critical';
-            this.elements.serverStatus.className = `server-status ${serverHealth}`;
-        }
-
-        startUpdates() {
-            this.updateStats();
-            setInterval(() => this.updateStats(), this.updateInterval);
-        }
-
-        async updateStats() {
-            const stats = await this.fetchDetailedStats();
-            this.updateUI(stats);
-            this.updateServerStatus(stats.players > 0);
+    updateServerStatus(isOnline) {
+        if (isOnline) {
+            this.elements.onlineStatus.className = 'online-status status-online';
+            this.elements.serverStatus.textContent = 'Online';
+        } else {
+            this.elements.onlineStatus.className = 'online-status status-offline';
+            this.elements.serverStatus.textContent = 'Offline';
         }
     }
-  class EventTicker {
-      constructor(config) {
-          this.tickerElement = document.getElementById('eventTicker');
-          this.events = [
-              "🎉 Car Show this Saturday at 8PM EST",
-              "💰 Double Money Week Starting Tomorrow",
-              "🚓 Police Recruitment Open",
-              "🏁 Street Racing Tournament Sunday",
-              "🎮 New Game Mode Released"
-          ];
-        
-          // Create enough copies for smooth infinite scroll
-          this.renderEvents();
-          this.startScrolling();
-      }
-    
-      renderEvents() {
-          // Repeat the announcements multiple times to ensure continuous flow
-          const repeatedContent = Array(3).fill(this.events)
-              .flat()
-              .map(event => `<span class="event-item">${event}</span>`)
-              .join('');
-            
-          this.tickerElement.innerHTML = repeatedContent;
-      }
 
-      startScrolling() {
-          // Reset animation when it ends to create seamless loop
-          this.tickerElement.addEventListener('animationend', () => {
-              this.tickerElement.style.animation = 'none';
-              // Trigger reflow
-              void this.tickerElement.offsetWidth;
-              this.tickerElement.style.animation = 'scroll 30s linear infinite';
-          });
-      }
-  }
-  // Initialize everything at the bottom
+    async fetchDetailedStats() {
+        try {
+            const [serverInfo, players] = await Promise.all([
+                fetch(`http://${this.serverIP}/info.json`),
+                fetch(`http://${this.serverIP}/players.json`)
+            ]);
+
+            const serverData = await serverInfo.json();
+            const playerData = await players.json();
+
+            return {
+                players: playerData.length,
+                maxPlayers: serverData.vars.sv_maxClients,
+                queue: 0, // If you have a queue system
+                fps: Math.round(serverData.vars.sv_fps || 60),
+                uptime: serverData.vars.Uptime,
+                playerList: playerData.map(p => ({
+                    id: p.id,
+                    name: p.name,
+                    ping: p.ping
+                }))
+            };
+        } catch (error) {
+            console.warn('Server stats fetch failed:', error);
+            return this.stats; // Return current stats on error
+        }
+    }
+
+    updateUI(stats) {
+        // Update existing elements
+        this.elements.playerCount.textContent = `${stats.players}/${stats.maxPlayers}`;
+        this.elements.serverFPS.textContent = stats.fps;
+    
+        // Add player list update
+        if (stats.playerList && this.elements.playerList) {
+            this.elements.playerList.innerHTML = stats.playerList
+                .map(player => `
+                    <div class="player-item">
+                        <span class="player-name">${player.name}</span>
+                        <span class="player-ping">${player.ping}ms</span>
+                    </div>
+                `).join('');
+        }
+
+        // Add server health indicator
+        const serverHealth = stats.fps >= 30 ? 'good' : stats.fps >= 20 ? 'warning' : 'critical';
+        this.elements.serverStatus.className = `server-status ${serverHealth}`;
+    }
+
+    startUpdates() {
+        this.updateStats();
+        setInterval(() => this.updateStats(), this.updateInterval);
+    }
+
+    async updateStats() {
+        const stats = await this.fetchDetailedStats();
+        this.updateUI(stats);
+        this.updateServerStatus(stats.players > 0);
+    }
+}
+
+class EventTicker {
+    constructor(config) {
+        this.tickerElement = document.getElementById('eventTicker');
+        this.events = [
+            "Horizon City Police Department Report: A citizen reported a suspicious package at the city hall. Please be cautious.",
+            "Horizon City Police Department : We are currently recruiting new officers. If you are interested, please apply at the police department.",
+            "West Mesa County Sheriff Office : We are currently recruiting new officers. If you are interested, please apply at the police department",
+            "New Horizon State Trooper : We are currently recruiting new officers. If you are interested, please apply at the police department.",
+            "Fire Department of Horizon City : We are currently recruiting new firefighters. If you are interested, please apply at the fire department.",
+            
+        ];
+      
+        // Create enough copies for smooth infinite scroll
+        this.renderEvents();
+        this.startScrolling();
+        this.setGreenText();
+    }
+  
+    setGreenText() {
+        if (this.tickerElement) {
+            this.tickerElement.style.color = '#4CAF50';
+        }
+    }
+
+    renderEvents() {
+        // Repeat the announcements multiple times to ensure continuous flow
+        const repeatedContent = Array(3).fill(this.events)
+            .flat()
+            .map(event => `<span class="event-item" style="color: #4CAF50">${event}</span>`)
+            .join('');
+          
+        this.tickerElement.innerHTML = repeatedContent;
+    }
+
+    startScrolling() {
+        // Reset animation when it ends to create seamless loop
+        this.tickerElement.addEventListener('animationend', () => {
+            this.tickerElement.style.animation = 'none';
+            // Trigger reflow
+            void this.tickerElement.offsetWidth;
+            this.tickerElement.style.animation = 'scroll 30s linear infinite';
+        });
+    }
+}  // Initialize everything at the bottom
   let loadingScreen;
 
   // Wait for both DOM and CONFIG to be ready

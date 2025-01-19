@@ -1,11 +1,11 @@
 /* Root Variables */
 :root {
-    --primary-color: #4CAF50;      /* Restore green as primary */
-    --secondary-color: #8BC34A;    /* Light green as secondary */
+    --primary-color: #4CAF50;
+    --secondary-color: #8BC34A;
     --background-dark: #1a1a1a;
     --text-light: #ffffff;
     --text-dark: #333333;
-    --accent-green: #45a049;       /* Add darker green for accents */
+    --accent-green: #45a049;
 }
 
 /* Base Styles */
@@ -97,14 +97,7 @@ body {
       display: block;
     }
     /* Root Variables */
-    :root {
-        --primary-color: #4CAF50;
-        --secondary-color: #8BC34A;
-        --background-dark: #1a1a1a;
-        --text-light: #ffffff;
-        --text-dark: #333333;
-        --accent-green: #45a049;
-    }
+   
 
     /* Loading Bar */
     .loading-bar-fill {
@@ -141,15 +134,7 @@ body {
     .event-highlight {
         color: #4CAF50 !important;
     }
-      /* Root Variables */
-      :root {
-          --primary-color: #4CAF50;
-          --secondary-color: #8BC34A;
-          --background-dark: #1a1a1a;
-          --text-light: #ffffff;
-          --text-dark: #333333;
-          --accent-green: #45a049;
-      }
+
 
       /* Loading Container Text Colors */
       .loading-container * {
@@ -220,6 +205,7 @@ body {
           text-decoration: none;
           transition: transform 0.2s;
           background: var(--primary-color);
+          border-color: var(--border-color) !important;
       }
 
       .social-button:hover {
@@ -294,10 +280,6 @@ body {
     backdrop-filter: blur(8px);
 }
 
-/* Add smooth scrollbar for overflow */
-.staff-box::-webkit-scrollbar {
-    width: 6px;
-}
 
 .staff-box::-webkit-scrollbar-track {
     background: rgba(0, 0, 0, 0.2);
@@ -318,6 +300,7 @@ body {
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
     position: relative;
 }
+
 
 .staff-title:after {
     content: '';
@@ -606,23 +589,24 @@ body {
     left: 0;
     width: 100%;
     background: rgba(0, 0, 0, 0.7);
-    border: 2px solid #4CAF50;
+    border-bottom: 1px solid #4CAF50;  /* Changed from 2px to 1px, more subtle */
     z-index: 1000;
+    height: 30px; /* Reduced height */
 }
 
 .ticker-content {
     white-space: nowrap;
     display: inline-block;
     animation: scroll 30s linear infinite;
-    padding: 8px 0;
+    padding: 4px 0; /* Reduced padding */
 }
 
 .event-item {
     display: inline-block;
-    padding: 10px 20px;
+    padding: 4px 12px; /* Reduced padding */
     color: white;
-    font-size: 16px;
-    text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
+    font-size: 14px; /* Reduced font size */
+    text-shadow: 0 0 3px rgba(255, 0, 0, 0.5);
 }
 @keyframes scroll {
     0% { transform: translateX(100%); }
@@ -676,12 +660,12 @@ body {
 
 .event-item {
     margin: 0 20px;
-    color: white;
+    color: var(--primary-color);
     font-weight: bold;
 }
 
 .event-highlight {
-    color: var(--primary-color);
+    color: var(--secondary-color);
     font-weight: bold;
 }
 
@@ -695,7 +679,40 @@ body {
 }
 .rules-panel {
     background: rgba(0, 0, 0, 0.8);
-    border-radius: 10px;
+
+/* Text color updates */
+.staff-name,
+.panel-title,
+.stat-label,
+.stat-value,
+.feed-title,
+.player-name,
+.loading-text,
+.loading-message,
+.progress,
+.loading-tips,
+.server-features h4,
+.feature-list li,
+.event-item {
+    color: var(--primary-color);
+}
+
+/* Keep rules panel text white for contrast */
+.rules-panel .rule-text {
+    color: white;
+}
+
+/* Staff role text */
+.staff-role {
+    color: var(--accent-color) !important;
+}
+
+/* Player info text */
+.player-ids,
+.join-timestamp {
+    color: var(--secondary-color);
+    opacity: 0.9;
+}    border-radius: 10px;
     padding: 20px;
     margin: 20px;
     max-width: 800px;
@@ -705,6 +722,7 @@ body {
 .rules-title {
     color: var(--primary-color);
     text-align: center;
+margin-bottom: 15px;
     margin-bottom: 20px;
     font-size: 24px;
 }
