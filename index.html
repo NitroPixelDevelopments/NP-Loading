@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="fivem-nui-version" content="2.0">
+    <title>County Road RP Loading</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles/mediaPlayer.css">
+</head>
+<body>
+    <!-- YouTube Background -->
+    <div id="player-container">
+        <iframe id="youtubeBackground"
+            src="https://www.youtube.com/embed/KWAHGy_eee4?autoplay=1&mute=1&loop=1&playlist=KWAHGy_eee4&controls=0&showinfo=0&rel=0&enablejsapi=1&version=3&playerapiid=ytplayer"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+        </iframe>
+    </div>
+      <!-- Media Controls -->
+      <div class="media-controls">
+          <button id="toggleMusic" class="media-button">
+              <i class="fas fa-play"></i>
+          </button>
+          <div class="volume-control">
+              <input type="range" id="volumeControl" min="0" max="100" value="50">
+              <span class="volume-value">50%</span>
+          </div>
+          <div class="track-info">
+              <span id="trackName">Currently Playing: Background Music</span>
+          </div>
+      </div>
+    <!-- Event Ticker -->
+    <div class="event-ticker">
+        <div class="ticker-content" id="eventTicker"></div>
+    </div>
+
+    <!-- Staff Box -->
+    <div class="staff-box">
+        <h3 class="staff-title">Server Staff</h3>
+        <div class="staff-grid">
+            <!-- Owner -->
+            <div class="staff-card" data-role="Owner">
+                <img src="assets/country.png" alt="Owner Name" class="staff-avatar">
+                <h4 class="staff-name">Antonio Bailey</h4>
+                <p class="staff-role" style="color: #ffd700">Owner</p>
+                <p class="staff-id"></p>
+            </div>
+
+            <!-- Admin -->
+            <div class="staff-card" data-role="Owner">
+                <img src="assets/country.png" alt="Owner Name" class="staff-avatar">
+                <h4 class="staff-name">Becks</h4>
+                <p class="staff-role" style="color: #ffd700">Owner</p>
+                <p class="staff-id"></p>
+            </div>
+
+            <!-- Moderators -->
+            <div class="staff-card" data-role="Lead Administrator">
+                <img src="assets/country.png" alt="Mod1 Name" class="staff-avatar">
+                <h4 class="staff-name">CPT Liam Baker</h4>
+                <p class="staff-role" style="color: #4CAF50">Lead Administrator</p>
+                <p class="staff-id"></p>
+            </div>
+
+            <div class="staff-card" data-role="Moderator">
+                <img src="assets/country.png" alt="Mod2 Name" class="staff-avatar">
+                <h4 class="staff-name">Gravityramen</h4>
+                <p class="staff-role" style="color: #4CAF50">Lead Administrator</p>
+                <p class="staff-id"></p>
+            </div>
+
+            <div class="staff-card" data-role="Moderator">
+                <img src="assets/country.png" alt="Mod3 Name" class="staff-avatar">
+                <h4 class="staff-name"> ice_breaker47</h4>
+                <p class="staff-role" style="color: #4CAF50">Lead Administrator</p>
+                <p class="staff-id"></p>
+            </div>
+
+            <!-- Support Staff -->
+            <div class="staff-card" data-role="Support">
+                <img src="assets/country.png" alt="Support1 Name" class="staff-avatar">
+                <h4 class="staff-name">chev9015</h4>
+                <p class="staff-role" style="color: #7289DA">Administrator</p>
+                <p class="staff-id"></p>
+            </div>
+
+            <div class="staff-card" data-role="Support">
+                <img src="assets/country.png" alt="Support2 Name" class="staff-avatar">
+                <h4 class="staff-name">Carcatdog123</h4>
+                <p class="staff-role" style="color: #7289DA">Lead Moderator</p>
+                <p class="staff-id"></p>
+            </div>
+
+            <div class="staff-card" data-role="Support">
+                <img src="assets/country.png" alt="Support3 Name" class="staff-avatar">
+                <h4 class="staff-name">crasynt</h4>
+                <p class="staff-role" style="color: #7289DA">Development</p>
+                <p class="staff-id"></p>
+            </div>
+
+            <div class="staff-card" data-role="Support">
+                <img src="assets/npdev.png" alt="Support4 Name" class="staff-avatar">
+                <h4 class="staff-name">NoPixel Development</h4>
+                <p class="staff-role" style="color: #7289DA">Development</p>
+                <p class="staff-id">Our in house Development Team</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Player Info Panel -->
+    <div class="player-info-panel">
+        <h3 class="panel-title">Server Information</h3>
+        <div class="server-stats">
+            <div class="stat-item">
+                <span class="stat-label">Server Status</span>
+                <span class="stat-value">
+                    <span class="online-status"></span>
+                    <span id="serverStatus"></span>
+                </span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Players Online</span>
+                <span class="stat-value" id="playerCount"></span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Queue</span>
+                <span class="stat-value" id="queueCount"></span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Average FPS</span>
+                <span class="stat-value" id="serverFPS"></span>
+            </div>
+        </div>
+        
+        <div class="server-features">
+            <h4>Active Features</h4>
+            <ul class="feature-list">
+                <li>Custom Cars</li>
+                <li>Dynamic Weather</li>
+                <li>Custom Jobs</li>
+                <li>Economy System</li>
+            </ul>
+        </div>
+        
+        <div class="player-join-feed">
+            <h4 class="feed-title">Recent Joins</h4>
+            <div class="join-list" id="joinFeed"></div>
+        </div>
+    </div>
+
+    <!-- Main Loading Container -->
+    <div class="loading-container">
+        <div class="logo">
+            <img src="assets/country.png" alt="Logo">
+        </div>
+        
+        <div class="loading-progress">
+            <div class="loading-bar">
+                <div class="loading-bar-fill"></div>
+            </div>
+            <span class="progress">0%</span>
+        </div>
+
+        <div class="loading-message">Initializing...</div>
+        <div class="loading-tips">Welcome to County Road RP!</div>
+
+        <div class="social-links">
+            <a href="#" class="discord">Join Discord</a>
+            <a href="#" class="website">Visit Website</a>
+        </div>
+    </div>
+        <!-- Rules Panel -->
+        <div class="rules-panel">
+            <h3 class="rules-title">Server Rules</h3>
+            <div class="rules-grid">
+                <div class="rule-card">
+                    <div class="rule-number">#1</div>
+                    <div class="rule-text">Respect all players and staff members at all times</div>
+                </div>
+                <div class="rule-card">
+                    <div class="rule-number">#2</div>
+                    <div class="rule-text">No breaking character during active roleplay situations</div>
+                </div>
+                <div class="rule-card">
+                    <div class="rule-number">#3</div>
+                    <div class="rule-text">Follow all traffic laws unless in emergency situations</div>
+                </div>
+                <div class="rule-card">
+                    <div class="rule-number">#4</div>
+                    <div class="rule-text">Use proper radio etiquette and communication channels</div>
+                </div>
+                <div class="rule-card">
+                    <div class="rule-number">#5</div>
+                    <div class="rule-text">No metagaming or powergaming allowed</div>
+                </div>
+                <div class="rule-card">
+                    <div class="rule-number">#6</div>
+                    <div class="rule-text">Report all bugs and exploits to staff immediately</div>
+                </div>
+                <div class="rule-card">
+                    <div class="rule-number">#7</div>
+                    <div class="rule-text">Keep all interactions family-friendly and appropriate</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Scripts -->
+    <!-- Load config first -->
+    <script src="scripts/config.js"></script>
+    <script src="scripts/script.js"></script>
+</body>
+</html>
